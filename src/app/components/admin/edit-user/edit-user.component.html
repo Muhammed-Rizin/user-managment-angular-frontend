@@ -1,0 +1,16 @@
+<app-admin-nav></app-admin-nav>
+<div class="login-box">
+    <p>Edit User</p>
+    <form [formGroup]="form" (submit)="submit()">
+        <div class="user-box">
+            <input formControlName="name" name="name"  type="text"  [(ngModel)]="userName">
+            <label>Name</label>
+        </div>
+        <div class="user-box">
+            <input  formControlName="email" name="email"  type="email" [(ngModel)]="email">
+            <label>Email</label>
+        </div>
+    <button class="btn btn-secondary" type="submit">Submit</button>
+    </form>
+
+  </div>
