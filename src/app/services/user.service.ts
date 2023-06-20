@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { delay } from 'rxjs';
+import { User } from '../components/admin/state/types/user.type';
 
 @Injectable({
   providedIn: 'root'
@@ -19,11 +20,14 @@ export class UserService {
   }
 
   deleteUser(id : string) {
-    console.log('hi')
     return this.http.get(`${this.url}deleteuser?id=${id}`)
   }
 
   getUser(){
     return this.http.get(`${this.userUrl}user`,{withCredentials : true})
+  }
+
+  addUser (user : User) {
+    return this.http.post(`${this.url}createuser`, user, {withCredentials : true})
   }
 }

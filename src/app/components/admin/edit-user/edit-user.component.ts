@@ -2,8 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { ToastrService } from 'ngx-toastr';
 import { Emitters } from 'src/app/emitter/emitter';
+import { loadUser } from '../../state/user.actions';
 
 @Component({
   selector: 'app-edit-user',
@@ -16,7 +18,8 @@ export class EditUserComponent implements OnInit{
     private router  : ActivatedRoute,
     private route : Router,
     private http : HttpClient,
-    private toastr : ToastrService
+    private toastr : ToastrService,
+    private store : Store
   ){}
 
   form : FormGroup
@@ -27,10 +30,20 @@ export class EditUserComponent implements OnInit{
   ngOnInit(): void {
     this.userId = this.router.snapshot.paramMap.get('id');
     this.getUserData(this.userId as string)
+    // this.store.dispatch(loadUser())
 
     this.form = this.fromBuilder.group({
       name : this.userName,
       email : this.email
+    })
+
+    this.http.get('http://localhost:5000/api/admin/admin',{
+      withCredentials : true
+    }).subscribe((res : any) => {
+      Emitters.adminAuth.emit(true)
+    },(err) => {
+      this.route.navigate(['/admin'])
+      Emitters.adminAuth.emit(false)
     })
   }
 

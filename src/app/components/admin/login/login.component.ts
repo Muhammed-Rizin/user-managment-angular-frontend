@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Emitters } from 'src/app/emitter/emitter';
 
 @Component({
   selector: 'app-login',
@@ -24,6 +25,16 @@ export class LoginComponent implements OnInit{
         email : '',
         password : ''
       })
+
+      this.http.get('http://localhost:5000/api/admin/admin',{
+      withCredentials : true
+    }).subscribe((res : any) => {
+      console.log(res)
+      this.router.navigate(['/admin/dashboard'])
+      Emitters.adminAuth.emit(true)
+    },(err) => {
+      Emitters.adminAuth.emit(false)
+    })
   }
 
   validateEmail (email : string) : boolean {
@@ -46,9 +57,11 @@ export class LoginComponent implements OnInit{
         withCredentials : true
       }).subscribe(
         (res) => (
+          console.log(res),
           this.toastr.success('Successfully loged in', 'Success'),
           this.router.navigate(['/admin/dashboard'])),
         (err) => (
+          console.log(err),
           this.toastr.error(err.error.message, 'Error')
         )
       )

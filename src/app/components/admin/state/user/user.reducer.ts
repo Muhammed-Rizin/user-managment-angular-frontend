@@ -12,12 +12,12 @@ export const initialState : UserState = {
 
 export const userReducer = createReducer(
     initialState,
-    on(UserActions.loadUser, state => ({...state, loading : true})),
-    on(UserActions.loadUserSuccess, (state, {users}) => ({...state, loading : false, loaded : true, users})),
-    on(UserActions.loadUserFailure, (state, {error}) => ({...state, loading : false, loaded : true, error})),
-    on(UserActions.removeUser, (state, {id}) => ({...state, loading : true})),
-    on(UserActions.removeUserSuccess, (state, {id}) => (
+    on(UserActions.loadUsers, state => ({...state, loading : true})),
+    on(UserActions.loadUsersSuccess, (state, {users}) => ({...state, loading : false, loaded : true, users})),
+    on(UserActions.loadUsersFailure, (state, {error}) => ({...state, loading : false, loaded : true, error})),
+    on(UserActions.removeUsers, (state, {id}) => ({...state, loading : true})),
+    on(UserActions.removeUsersSuccess, (state, {id}) => (
         {...state, loading : false, loaded : true, 
             users : state.users.filter((a) => a._id !== id)})),
-    on(UserActions.removeUserFailure, (state, {error}) => ({...state, loading : false, loaded : true, error })),
+    on(UserActions.removeUsersFailure, (state, {error}) => ({...state, loading : false, loaded : true, error })),
 ) 

@@ -28,21 +28,10 @@ export class ProfileComponent implements OnInit{
   email : string
   image : string
   state : boolean = false
-  state1 : boolean = true
   selectedImage : any | File  
+  user$ : any | string
 
-  user$  = this.store.select(selectUser).subscribe((data) => {
-    this.name = data?.name
-    this.email = data?.email
-    this.image = data?.image
-    if(data.image) {
-      this.state = false
-      this.state1 = true
-    }else {
-      this.state = true
-      this.state1 = false
-    }
-  })
+  
   
   cloudinaryConfig: any;
   ngOnInit(): void {
@@ -51,6 +40,26 @@ export class ProfileComponent implements OnInit{
     this.form = this.formBuilder.group({
       image: [''],
     })
+
+    this.user$  = this.store.select(selectUser).subscribe((data) => {
+      this.name = data?.name
+      this.email = data?.email
+      this.image = data?.image
+      if(data.image) {
+        this.state = true
+      }else {
+        this.state = false
+      }
+    })
+
+    this.http.get('http://localhost:5000/api/user',{
+        withCredentials : true
+      }).subscribe((res : any) => {
+        Emitters.authEmitter.emit(true)
+      },(err) => {
+        this.router.navigate(['/login'])
+        Emitters.authEmitter.emit(false)
+      })
   }
 
   uploadImage(files  : any){
