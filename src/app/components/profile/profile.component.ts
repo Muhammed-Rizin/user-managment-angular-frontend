@@ -44,7 +44,7 @@ export class ProfileComponent implements OnInit{
     this.user$  = this.store.select(selectUser).subscribe((data) => {
       this.name = data?.name
       this.email = data?.email
-      this.image = data?.image
+      this.image = `http://localhost:5000/file/${data.image}`
       if(data.image) {
         this.state = true
       }else {
