@@ -20,4 +20,9 @@ export const userReducer = createReducer(
         {...state, loading : false, loaded : true, 
             users : state.users.filter((a) => a._id !== id)})),
     on(UserActions.removeUsersFailure, (state, {error}) => ({...state, loading : false, loaded : true, error })),
+    on(UserActions.addUsers, (state, {user}) => ({...state, loading : true})),
+    on(UserActions.addUsersSuccess, (state , {user}) => ({...state, loaded : true, loading : false, 
+        users : [...state.users, user]
+    })),
+    on(UserActions.addUsersFailure, (state, {error}) => ({...state, loading : false, loaded : true, error }))
 ) 
